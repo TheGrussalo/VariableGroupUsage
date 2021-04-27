@@ -1,0 +1,48 @@
+﻿@model VariableGroupUsage.Models.HomeViewModel
+@{
+    //ViewData["Title"] = "Home Page";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.DropDownListFor(m => m.SelectedVariableGroupId,
+        new SelectList(
+          Model.AllVariableGroups,
+          "Key",
+          "Value"),
+        "Please select...",
+      new { onchange = @"form.submit();" }
+      )
+    </div>
+
+    @if (Model.SelectedVariableGroupId != 0)
+    { 
+        <h2>@Model.AllVariableGroups[@Model.SelectedVariableGroupId]</h2>
+    }
+
+    @if (Model.VariableGroupAppearsInBuildPipelines != null)
+    {
+        <h3>Builds</h3>
+        <ul>
+            @foreach (var item in Model.VariableGroupAppearsInBuildPipelines)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    }
+
+    @if (Model.VariableGroupAppearsInReleasePipelines != null)
+    {
+        <h3>Releases</h3>
+        <ul>
+            @foreach (var item in Model.VariableGroupAppearsInReleasePipelines)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    }
+
+}
